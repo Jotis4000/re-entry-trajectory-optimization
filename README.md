@@ -42,20 +42,24 @@ Strong constraints are further placed on the maximum stagnation heat flux and ma
 
 ## Example Results and Brief Discussion
 
-The section below shows some example results for three different cases which may be modelled using this optimization routine. The first figure represents an essentially unconstrained re-entry profile (almost a ballistic trajectory). The second figure shows a slight constraint on the G-load limit, as well as a moderate constraint on the peak stagnation point heating. The last figure 
+The section below shows some example results for three different cases which may be modelled using this optimization routine. The first figure represents an essentially unconstrained re-entry profile. The second figure has moderate constraints on both variables. Finally, the third figure shows a trajectory with strong constraints on both G-loads and peak stagnation point heat transfer.
 
 * Results for $G_{max}=10.0$, $\dot{q}_{peak}=800$ $kW/m^2$
 <p align="center">
-  <img src="figs/reentry_G=10.0_q=800.png" width="80%">
+  <img src="figs/reentry_G=10.0_q=800.png" width="100%">
 </p>
+
 * Results for $G_{max}=6.5$, $\dot{q}_{peak}=600$ $kW/m^2$
 <p align="center">
-  <img src="figs/reentry_G=6.5_q=600.png" width="80%">
+  <img src="figs/reentry_G=6.5_q=600.png" width="100%">
 </p>
+
 * Results for $G_{max}=3.0$, $\dot{q}_{peak}=500$ $kW/m^2$
 <p align="center">
-  <img src="figs/reentry_G=3.0_q=500.png" width="80%">
+  <img src="figs/reentry_G=3.0_q=500.png" width="100%">
 </p>
+
+All three profiles demonstrate realistic re-entry profiles given the developed physics model. As expected, the lower the aerodynamic deceleration constraint, the more lift is required to keep the capsule decelerating slowly at the higher parts of the atmosphere as long as possible. The unconstrained ballistic trajectory in the first figure also shows an alpha scheduling of practically zero angle of attack, as the easiest way to reduce total heat absorbed is to reduce heating time (decelerate as fast as possible). Notably, the first two figures also indicate that the optimized trajectory does not hit the peak stagnation heat flux ceiling prescribed by the constraint. This is a result of the natural correlation between the trajectory shape and the peak heating as a result of the G-load constraint. A full analysis of the system is outside the scope of the current project, but will be reviewed in future versions of this project.
 
 ## Limitations
 
