@@ -1,6 +1,4 @@
-# re-entry-optimization-hypersonic
-
-TEST FOR README COMPATIBILITY
+# re-entry-trajectory-optimization
 
 ![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
 ![PyGMO](https://img.shields.io/badge/PyGMO-Optimization-orange.svg)
@@ -11,14 +9,41 @@ TEST FOR README COMPATIBILITY
 
 ---
 
+## Introduction
+
+This project aims to provide a rudimentary baseline for further work on trajectory optimization using ESA's PyGMO. Loosely based on concepts and ideas from Anderson's "Hypersonic and High Temperature Gas Dynamics", it provides a first estimate for trajectory optimization using interpolated angle of attack scheduling during re-entry. The goal of the optimization is to minimize the total stagnation heat absorbed during re-entry, with constraints placed on the peak stagnation point heat transfer and deceleration G-load. A model geometry of the Apollo crew capsule was used due to its simplicity in implementation. While active angle of attack scheduling and control is not dynamically an option for such a vehicle with traditional control systems (such as bank angle reversal), the largely modular physics engine provides a baseline for use with more advanced geometries (e.g. space shuttles and spaceplanes with direct aerodynamic control over angle of attack).
+
 ## Physics & Modeling Methodology
 
-This simulation avoids reliance on empirical wind-tunnel data by deriving aerodynamic and environmental properties computationally:
+This simulation makes a substantial number of physical and mathematical assumptions, which are expanded on below.
 
-* **Aerodynamics (Modified Newtonian Theory):** The Apollo capsule geometry (spherical heat shield + conical afterbody) is dynamically meshed into 3D panels. Outward normals are computed, and local pressure coefficients are integrated over the surface using $C_p = C_{p,max} \sin^2(\theta)$ on windward panels. $C_{p,max}$ is dynamically derived using normal-shock relations.
-* **Thermal Heating:** Stagnation point convective heating is modeled using the Sutton-Graves relation: $\dot{q} = k \sqrt{\frac{\rho}{R_N}} V^3$.
-* **Atmosphere:** A vectorized implementation of the 1976 US Standard Atmosphere model provides high-speed density and speed-of-sound lookups.
-* **Optimization Strategy:** The problem is formulated as a non-linear control optimization. The trajectory is integrated using an RK4 solver across a 12-node discrete Angle of Attack schedule, penalized heavily for violating the 5.0e5 $W/m^2$ heat flux limit or the 3G deceleration limit.
+* **Point Mass/Forces, 3-DOF:** Rotational dynamics, moments of inertia, and true state control are not considered. As a result, the assumption is made that the control system has full and immediate authority on the state of the system. Furthermore, considerations to static and dynamic stability are neglected.
+* **Constant Mass:** No mass loss/change during re-entry (usually as a result of ablation of TPS or RCS propellant).
+* **Spherical, Non-Rotating Earth:** Earth's oblateness (J2 correction factor etc.) as well as Earth's rotation and the coriolis effect are neglected.
+* **(Modified) Newtonian Impact Theory for Lift and Drag:** The hypersonic thin-shock-layer approximation method is assumed for the full flight path. This assumption was made as a result of the lack of reliable aerodynamic data for the Apollo capsule outside of the hypersonic and high-supersonic regimes. For most trajectories, this is not too much of an issue as the velocity reached at the terminal phase hand-off is still $M\approx 3$ (thus only impacting the end of the trajectory after the point of peak heating).
+* **Calorically Perfect, Constant $\gamma$ Air:** Ionization and high-temperature effects are largely neglected, $\gamma=1.4=const$.
+* **No Viscous Drag:** Once again, neglected as a result of lack of reliable data. Easy to implement.
+* **Sutton-Graves Stagnation-Point Correlation for Heat Transfer:** Semi-empirical, convective, laminar, cold-wall formula. Naturally, this is not the case in true re-entry, but it provides a strong starting point for further development. 
+* **No Radiative Heating:** Only necessary for lunar-return+ re-entry trajectories (model is currently used for LEO trajectories).
+* **International Standard Atmosphere:** The ISA model is used to represent the atmosphere starting from the entry interface.
+
+The trajectory optimization forms a non-linear optimal control problem. As a result, Self-Adaptive Differential Evolution (SADE) was selected as the optimization algorithm. To ensure solution robustness, the problem is transformed into a Non-Linear Programming (NLP) problem using angle of attack scheduling over velocity instead of time. Outside of these control points, the angle of attack state is linearly interpolated. The objective function aims to minimize the total integrated heat absorbed by the vehicle, defined as the time integral of the stagnation point heat flux.
+
+$J = \int_{t_0}^{t_f} \dot{q}(t) dt$
+
+Strong constraints are further placed on the maximum stagnation heat flux and maximum deceleration in Gs. These constraints are enforced via substantial numerical penalties added to the fitness function to force the optimizater to adhere to the constraints. The trajectory is integrated using a 4th-order Runge Kutta (RK4) integrator.
+
+## Example Results and Brief Discussion
+
+
+
+## Sensitivity to Initial Conditions
+
+
+
+## Limitations
+
+
 
 ---
 
