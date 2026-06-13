@@ -17,8 +17,10 @@ This project aims to provide a rudimentary baseline for further work on trajecto
 
 A mesh was created using existing dimensions of the Apollo crew capsule. The geometry used is shown in the figures below.
 
-![Apollo 3D Surface](figs/capsule_meridian.png)
-![Apollo 3D Surface](figs/capsule_surface.png)
+<p align="center">
+  <img src="figs/capsule_surface.png" width="45%">
+  <img src="figs/capsule_meridian.png" width="45%">
+</p>
 
 This simulation makes a substantial number of physical and mathematical assumptions, which are expanded on below.
 
