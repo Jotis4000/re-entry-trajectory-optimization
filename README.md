@@ -15,11 +15,11 @@ This project aims to provide a rudimentary baseline for further work on trajecto
 
 ## Physics & Modeling Methodology
 
-A mesh was created using existing dimensions of the Apollo crew capsule. The geometry used is shown in the figures below.
+A mesh was created using existing dimensions of the Apollo crew capsule. The geometry used is shown in the figures below. The coordinate system used defines lift as positive upwards perpendicular to the velocity vector. As the aft part of the vehicle is facing forward, a positive angle of attack is defined as the direction in which positive lift is defined (heat shield facing towards the ground). Constants and parameters relating to the capsule are readily available and were obtained from existing literature where possible.
 
 <p align="center">
   <img src="figs/capsule_surface.png" width="45%">
-  <img src="figs/capsule_meridian.png" width="45%">
+  <img src="figs/capsule_meridian.png" width="40%">
 </p>
 
 This simulation makes a substantial number of physical and mathematical assumptions, which are expanded on below.
@@ -42,15 +42,26 @@ Strong constraints are further placed on the maximum stagnation heat flux and ma
 
 ## Example Results and Brief Discussion
 
+The section below shows some example results for three different cases which may be modelled using this optimization routine. The first figure represents an essentially unconstrained re-entry profile (almost a ballistic trajectory). The second figure shows a slight constraint on the G-load limit, as well as a moderate constraint on the peak stagnation point heating. The last figure 
 
-
-## Sensitivity to Initial Conditions
-
-
+* Results for $G_{max}=10.0$, $\dot{q}_{peak}=800$ $kW/m^2$
+<p align="center">
+  <img src="figs/reentry_G=10.0_q=800.png" width="80%">
+</p>
+* Results for $G_{max}=6.5$, $\dot{q}_{peak}=600$ $kW/m^2$
+<p align="center">
+  <img src="figs/reentry_G=6.5_q=600.png" width="80%">
+</p>
+* Results for $G_{max}=3.0$, $\dot{q}_{peak}=500$ $kW/m^2$
+<p align="center">
+  <img src="figs/reentry_G=3.0_q=500.png" width="80%">
+</p>
 
 ## Limitations
 
+As a result of the substantial physical assumptions made in the derivation of this model, significant improvements must be made to future versions to increase accuracy. These primarily include incorporating more accurate aerodynamic data for the full flight profile, as well as incorporating real gas and high temperature aerothermal effects. Furthermore, improvements may be made by expanding the physical model beyond a point-force model, allowing stability analyses and more accurate control system development.
 
+Another limitation which must be discussed is the use of a metaheuristic optimization model. As a result of such an optimization method, it cannot be mathematically concluded that the optimized trajectory is a true minimum for the desired objective function. However, for the scope of this project, this is accepted.
 
 ---
 
@@ -67,7 +78,7 @@ To ensure system stability, the numerical optimization and the data visualizatio
 
 ## Installation & Usage
 
-### 1. Dependencies
+### Dependencies
 Because PyGMO is a wrapper around heavily optimized C++ libraries, it is highly recommended to install it via `conda` rather than standard pip to avoid build-chain errors.
 
 ```bash
