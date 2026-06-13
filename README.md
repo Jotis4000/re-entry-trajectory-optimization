@@ -15,6 +15,11 @@ This project aims to provide a rudimentary baseline for further work on trajecto
 
 ## Physics & Modeling Methodology
 
+A mesh was created using existing dimensions of the Apollo crew capsule. The geometry used is shown in the figures below.
+
+![Apollo 3D Surface](figs/capsule_meridian.png)
+![Apollo 3D Surface](figs/capsule_surface.png)
+
 This simulation makes a substantial number of physical and mathematical assumptions, which are expanded on below.
 
 * **Point Mass/Forces, 3-DOF:** Rotational dynamics, moments of inertia, and true state control are not considered. As a result, the assumption is made that the control system has full and immediate authority on the state of the system. Furthermore, considerations to static and dynamic stability are neglected.
@@ -53,8 +58,8 @@ To ensure system stability, the numerical optimization and the data visualizatio
 
 * `main.py` — The core 3-DOF physics engine and PyGMO optimization routine. Generates the 3D surface mesh, runs the evolutionary algorithm, and exports results.
 * `atmosphere.py` — The standalone 1976 US Standard Atmosphere calculator.
-* `plot_results.py` — Ingests the optimization output and generates report-quality trajectory subplots (Altitude, Velocity, Heating, G-Load, and Control History).
-* `plot_geom.py` — Visualizes the generated 3D surface mesh and 2D meridian profile of the Apollo capsule.
+* `plot_results.py` — Visualizes the trajectory parameters in time and altitude.
+* `plot_geom.py` — Visualizes the generated 3D surface mesh and 2D meridian profile of the Apollo capsule (or any input mesh).
 
 ---
 
@@ -66,3 +71,6 @@ Because PyGMO is a wrapper around heavily optimized C++ libraries, it is highly 
 ```bash
 conda install -c conda-forge pygmo
 pip install numpy scipy matplotlib
+```
+
+Some issues were faced during runtime with C++ segmentation faults as a result of clashes between the PyGMO and matplotlib threads. This was fixed by splitting the primary optimizer (which requires PyGMO) and the plotting routines. If the plotting routines do not load correctly, it is recommended to run the plotting scripts on a separate Python environment (where PyGMO is not installed). For any further questions, feel free to contact the author.
